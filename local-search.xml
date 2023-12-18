@@ -4,23 +4,23 @@
   
   
   <entry>
-    <title>test1</title>
+    <title>实习面经</title>
     <link href="/2023/12/18/test1/"/>
     <url>/2023/12/18/test1/</url>
     
-    <content type="html"><![CDATA[<p><strong>实习面试记录</strong></p><p>2023.12.7</p><ul class="lvl-0"><li class="lvl-2"><p>百度一面</p></li><li class="lvl-2"><p>内容解析与理解及资源与用商垂类搜索组_机器学习实习研发工程师</p></li><li class="lvl-2"><p>项目</p></li><li class="lvl-2"><p>算法题：课程表2 leetcode210</p></li><li class="lvl-2"><p>一面通过</p></li></ul><p>2023.12.10</p><ul class="lvl-0"><li class="lvl-2"><p>矩视智能</p></li><li class="lvl-2"><p>项目</p></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4">当前流行的框架</li></ul></li><li class="lvl-2"><p>无算法题</p></li><li class="lvl-2"><p>过 应该没问题</p></li></ul><p>2023.12.11</p><ul class="lvl-0"><li class="lvl-2"><p>百度二面</p></li><li class="lvl-2"><p>内容解析与理解及资源与用商垂类搜索组_机器学习实习研发工程师</p></li><li class="lvl-2"><p>项目很详细</p></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4"><p>反问：你们做的是什么</p></li><li class="lvl-4"><ul class="lvl-4"><li class="lvl-6">文本解析</li></ul></li></ul></li><li class="lvl-2"><p>算法题：53 最大连续子数组和</p></li><li class="lvl-2"><p>中科慧眼</p></li><li class="lvl-2"><p>三维环境感知</p></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4">周围环境感知、训练深度学习模型</li></ul></li><li class="lvl-2"><p>深度学习实习</p></li><li class="lvl-2"><p>做CV的 方向不是太符合</p></li></ul><p>2023.12.12</p><ul class="lvl-0"><li class="lvl-2"><p>快手一面 上午11:00</p></li><li class="lvl-2"><p>算法实习生（数据方向）－【效率工程部】</p></li><li class="lvl-2"><p>资源不是很充足</p></li><li class="lvl-2"><p>好未来Tencent-Meeting-TAL</p></li><li class="lvl-2"><p>问的都是前沿知识 Flash Attention Page Attention</p></li><li class="lvl-2"><p>最长公共子序列 求子序列非</p></li><li class="lvl-2"><p>快手二面 16:00</p></li><li class="lvl-2"><p>算法实习生（数据方向）－【效率工程部】</p></li><li class="lvl-2"><p>数据分析的需求、数据生成内容、数据资产门户</p></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4">IT设备</li><li class="lvl-4">大模型</li></ul></li></ul><p>2023 12 14</p><p>小米一面</p><p>架构工程</p><p>算法工程</p>]]></content>
+    <content type="html"><![CDATA[<h1><strong>实习面试记录</strong></h1><p>​本次面试期间为12.05～12.14，投递主要方式为Boss直聘和牛客网站邮箱投递，面试了字节、快手、百度、好未来、小米等中大厂及个别小厂。其中快手、好未来offer；字节一面挂、百度二面后未知，小米一面后拒绝二面、小厂均过。</p><h2 id="百度">百度</h2><ul class="lvl-0"><li class="lvl-2"><p>百度一面</p><ul class="lvl-2"><li class="lvl-4">时间：2023.12.07</li><li class="lvl-4">岗位：内容解析与理解及资源与用商垂类搜索组_机器学习实习研发工程师</li><li class="lvl-4">面试内容：<ul class="lvl-4"><li class="lvl-6">项目</li><li class="lvl-6">算法题：<strong>课程表2 leetcode210</strong></li></ul></li><li class="lvl-4">结果：一面通过</li></ul></li><li class="lvl-2"><p>百度二面</p><ul class="lvl-2"><li class="lvl-4"><p>时间：2023.12.11</p></li><li class="lvl-4"><p>岗位：内容解析与理解及资源与用商垂类搜索组_机器学习实习研发工程师</p></li><li class="lvl-4"><p>面试内容</p><ul class="lvl-4"><li class="lvl-6">项目很详细</li><li class="lvl-6">反问：你们做的是什么：主要是文本解析</li><li class="lvl-6">算法题：<strong>53 最大连续子数组和</strong></li></ul></li><li class="lvl-4"><p>结果：暂时未知，大概率G，方向不匹配</p></li></ul></li></ul><h2 id="快手">快手</h2><ul class="lvl-0"><li class="lvl-2"><p>快手一面</p><ul class="lvl-2"><li class="lvl-4"><p>时间：2023.12.12</p></li><li class="lvl-4"><p>岗位：算法实习生（数据方向）－【效率工程部】</p></li><li class="lvl-4"><p>面试内容：</p><ul class="lvl-4"><li class="lvl-6">项目</li><li class="lvl-6">数据中台，数据量大，做数据大模型</li><li class="lvl-6">无算法题</li></ul></li></ul></li><li class="lvl-2"><p>结果：过</p></li><li class="lvl-2"><p>快手二面</p><ul class="lvl-2"><li class="lvl-4">时间：2023.12.12</li><li class="lvl-4">岗位：算法实习生（数据方向）－【效率工程部】</li><li class="lvl-4">面试内容：<ul class="lvl-4"><li class="lvl-6">数据分析的需求、数据生成内容、数据资产门户</li><li class="lvl-6">调研前沿大模型，做内容总结</li></ul></li><li class="lvl-4">结果：offer</li></ul></li></ul><h2 id="好未来">好未来</h2><ul class="lvl-0"><li class="lvl-2"><p>好未来一面</p><ul class="lvl-2"><li class="lvl-4"><p>时间： 2023.12.12</p></li><li class="lvl-4"><p>岗位：大模型推理优化架构</p></li><li class="lvl-4"><p>面试内容：</p><ul class="lvl-4"><li class="lvl-6">项目</li><li class="lvl-6">问的都是前沿知识 Flash Attention Page Attention vLLM</li><li class="lvl-6">算法题：<strong>最长公共子序列求子序列是什么</strong></li></ul></li><li class="lvl-4"><p>结果：过</p></li></ul></li><li class="lvl-2"><p>好未来二面</p><ul class="lvl-2"><li class="lvl-4">时间：2023.12.13<ul class="lvl-4"><li class="lvl-6">岗位：大模型推理优化架构</li><li class="lvl-6">面试内容：</li><li class="lvl-6">项目</li><li class="lvl-6">问的都是前沿知识 Flash Attention Page Attention vLLM</li><li class="lvl-6">算法题：<strong>无重复数字的全排列</strong></li></ul></li><li class="lvl-4">结果：offer</li></ul></li></ul><h2 id="小米">小米</h2><ul class="lvl-0"><li class="lvl-2"><p>小米一面</p><ul class="lvl-2"><li class="lvl-4">时间：2023.12.14</li><li class="lvl-4">岗位：推荐架构</li><li class="lvl-4">面试内容：<ul class="lvl-4"><li class="lvl-6">项目</li><li class="lvl-6">反问：做什么，主要是搜索，APP上搜索框</li><li class="lvl-6">算法题：<strong>leetcode 1267统计参与通信的服务器</strong></li></ul></li><li class="lvl-4">结果：过</li></ul></li></ul>]]></content>
     
     
     <categories>
       
-      <category>分类</category>
+      <category>面试</category>
       
     </categories>
     
     
     <tags>
       
-      <tag>标签</tag>
+      <tag>实习</tag>
       
     </tags>
     
