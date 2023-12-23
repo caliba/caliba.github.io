@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>LLM_review</title>
+    <link href="/2023/12/23/LLM-review/"/>
+    <url>/2023/12/23/LLM-review/</url>
+    
+    <content type="html"><![CDATA[<h1>大模型常见知识点</h1><h2 id="深度学习基础">深度学习基础</h2><h3 id="模型参数量计算">模型参数量计算</h3><p>针对参数量大小为<strong>x</strong>的模型，使用混合精度模型训练</p><ul class="lvl-0"><li class="lvl-2"><p>参数fp16: 2x</p></li><li class="lvl-2"><p>梯度fp16:2x</p></li><li class="lvl-2"><p>优化器状态：12x</p><ul class="lvl-2"><li class="lvl-4">模型参数fp32:4x</li><li class="lvl-4">优化器动量fp32：4x</li><li class="lvl-4">优化器方差：4x</li></ul></li></ul><h3 id="Normalization-归一化">Normalization 归一化</h3><ul class="lvl-0"><li class="lvl-2"><p>BN : 一个batch在同一纬度上做处理，所有样本的每一个特征之上进行归一化，规范化分布，解决内部<strong>协方差</strong>偏移，缓解梯度饱和问题，加快收敛。（沿着channel方向，标准化图）BN处理一个小批量（batch）中所有样本的同一特征。它计算小批量中每个特征的均值和方差，并使用这些统计信息来归一化特征。</p></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4">在CV卷积核中使用，是为了使得在不同样本上提取特征的稳定性</li><li class="lvl-4">抹杀了不同特征之间的大小关系，保留了不同样本间的大小关系</li><li class="lvl-4">NLP不定长，且好多位置填0，影响其他非0参数计算</li></ul></li><li class="lvl-2"><p>LN：在每个特征维度上进行归一化（在每个句子间） LN在单个样本内跨所有特征进行归一化。与BN不同，它不依赖于小批量中的其他样本。</p></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4">batch内不同样本同一位置token之间的差异性很重要，保证在不同token上提取的稳定性</li></ul></li><li class="lvl-2"><p>IN: IN常用于风格迁移等任务，它在单个样本的每个通道上进行归一化</p></li><li class="lvl-2"><p>GN:GN是BN和LN的折衷方案。它将特征分成若干组，并在这些组内进行归一化</p></li><li class="lvl-2"><p>适用场景不同：BN用于CNN，LN用于RNN，IN用于样式迁移，GN兼具BN和LN的优点</p></li><li class="lvl-2"><p>归一化粒度不同：BN针对批，LN针对层，IN针对实例，GN针对通道组</p></li><li class="lvl-2"><p>计算量不同：BN和GN计算量大，LN和IN计算量小</p></li></ul><h3 id="PreNorm-PostNorm">PreNorm &amp; PostNorm</h3><ul class="lvl-0"><li class="lvl-2"><p>PreNorm</p></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4">在 prenorm 中，归一化操作在层的输入之前进行。具体而言，在输入进入层之前，首先应用层归一化操作。这样，归一化的计算会涉及到输入以及层的权重和偏置参数。</li><li class="lvl-4">这种方式的一个优势是能够更好地处理梯度传播，因为输入进入网络时已经被归一化，梯度信号更容易传递。但有时可能会受到初始归一化对梯度的影响。</li><li class="lvl-4">容易训练，但是深层网络学习不好，因为权重大多来自恒等分支，恒等分支容易训练</li></ul></li><li class="lvl-2"><p>PostNorm</p></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4">先将上一层的输出和当前层的输出相加之后，在进行归一化</li><li class="lvl-4">这种方式的优势在于，归一化操作不会影响输入到层的计算，因此在训练初期可能更容易收敛。然而，在梯度传播方面可能存在一些挑战。</li><li class="lvl-4">训练效果好，但是不容易训练（相当于残差部分的功能被削弱了）</li></ul></li></ul><h3 id="协方差偏移">协方差偏移</h3><p>​**协方差偏移（Covariate Shift）**是指在机器学习中训练数据和测试数据之间的分布不匹配的情况。当训练数据和测试数据的分布差异较大时，<strong>模型可能面临协方差偏移问题，这可能导致模型在测试集上的性能下降。</strong></p><p>​具体而言，协方差偏移发生在训练数据和测试数据的输入特征分布不同，但目标分布（标签分布）保持相对稳定的情况。这可能是由于数据的收集方式、来源的变化或者时间上的漂移等原因引起的。归一化能够将输入的分布特征调节的相对一致。</p><h3 id="正则化和范数">正则化和范数</h3><p>​正则化是通过在模型的损失函数中添加一个附加项（正则化项）来控制模型的复杂性的一种技术。通过约束参数大小，降低过拟合，降低模型复杂度。</p><ul class="lvl-0"><li class="lvl-2"><p>L1 <strong>在模型的损失函数中添加模型权重的绝对值之和</strong></p></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4"><strong>有助于一些权重为0，从而实现特征选择，减少模型的复杂性</strong></li><li class="lvl-4">适用于特征稀疏性强的情况</li><li class="lvl-4">L1 范数倾向于使一些参数变为零，因此适用于特征选择和稀疏性推导。</li></ul></li><li class="lvl-2"><p>L2 <strong>在模型的损失函数中添加模型权重的平方和</strong></p></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4"><strong>有助于防止权重过大，使模型更加稳定，使得所有特征对于预测都有一定贡献</strong></li><li class="lvl-4">适用于所有特征对预测有一定贡献的情况</li><li class="lvl-4">L2 范数倾向于使参数都变得较小，适用于权重衰减和防止过拟合。</li></ul></li></ul><h3 id="FW-BW">FW &amp; BW</h3><ul class="lvl-0"><li class="lvl-2"><p>前向传播</p></li></ul><p>​前向传播指的是从输入层到输出层依次计算每一层的输出结果的过程。在前向传播中，输入数据通过神经网络的各个层，逐层进行加权求和、激活函数处理，最终得到输出结果。<strong>说的简单一点就是，前向传播就是把输入数据转换为输出结果，实现对数据的分类和预测。</strong></p><ul class="lvl-0"><li class="lvl-2"><p>反向传播</p></li></ul><p>​反向传播算法将损失函数对网络输出的偏导数作为初始误差信号，并通过链式法则，将这个误差信号反向传播到每个神经元的输入端，计算每个神经元的输入对其输出的偏导数，并将这个偏导数与误差信号相乘，得到每个神经元的误差信号。最终，反向传播算法计算每个权重和偏差的梯度，用于更新网络的参数。简单来说，反向传播就是过计算损失函数对网络参数的梯度，优化神经网络的参数，提高网络的性能。</p><h3 id="激活函数">激活函数</h3><p>​<strong>激活函数在神经网络的每一层中引入非线性，使得神经网络能够你和复杂的非线性模式</strong></p><ul class="lvl-0"><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4">Sigmoid</li></ul></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4"><ul class="lvl-4"><li class="lvl-6">一般适用于二元分类问题，输出在0,1之间，在极值附近趋于0，反向传播梯度小时</li></ul></li></ul></li></ul><p><img src="https://cdn.nlark.com/yuque/0/2023/png/33921914/1700445615357-815cf856-4e21-4ec8-a160-4b2b2142cb09.png" alt="img"></p><ul class="lvl-0"><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4">Relu</li></ul></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4"><ul class="lvl-4"><li class="lvl-6">f(x) = max(0,f(x)) 计算简单</li><li class="lvl-6">对于负值输入，梯度为0，梯度为0</li><li class="lvl-6">在0点处不可导，一般指定0处的导数为0或者使用ln(1+e^x)来取代，0处的导数值为0.5</li></ul></li></ul></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4">Gelu <strong>（LLM）</strong></li></ul></li><li class="lvl-2"><ul class="lvl-2"><li class="lvl-4"><ul class="lvl-4"><li class="lvl-6">高斯误差函数变种<img src="https://cdn.nlark.com/yuque/0/2023/png/33921914/1700187820925-1016bb6f-e61d-406e-9e14-d1f1f3dc080c.png" alt="img"></li><li class="lvl-6">在接近0的范围内呈线性，在其他地方具有非线形</li><li class="lvl-6">计算复杂度高，增加训练时间</li></ul></li></ul></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>面经</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>大模型 实习</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>实习面经</title>
     <link href="/2023/12/18/test1/"/>
     <url>/2023/12/18/test1/</url>
