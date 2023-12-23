@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/img/default.png">
 <meta property="article:published_time" content="2023-12-23T09:58:57.000Z">
-<meta property="article:modified_time" content="2023-12-23T10:28:11.566Z">
+<meta property="article:modified_time" content="2023-12-23T17:08:10.856Z">
 <meta property="article:author" content="Agonsle">
 <meta property="article:tag" content="大模型 实习">
 <meta name="twitter:card" content="summary_large_image">
@@ -244,7 +244,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          3.9k 字
         
       </span>
     
@@ -255,7 +255,7 @@
         
         
         
-          17 分钟
+          33 分钟
         
       </span>
     
@@ -306,7 +306,7 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2023年12月23日 晚上
+                    本文最后更新于：2023年12月24日 凌晨
                   
                 
               </p>
@@ -438,7 +438,11 @@
 <ul class="lvl-0">
 <li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">Sigmoid</li>
+<li class="lvl-4">Sigmoid
+<ul class="lvl-4">
+<li class="lvl-6">$$f(x) = \frac{1}{1+e^{-x}}$$</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="lvl-2">
@@ -450,9 +454,6 @@
 </li>
 </ul>
 </li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33921914/1700445615357-815cf856-4e21-4ec8-a160-4b2b2142cb09.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<ul class="lvl-0">
 <li class="lvl-2">
 <ul class="lvl-2">
 <li class="lvl-4">Relu</li>
@@ -462,7 +463,7 @@
 <ul class="lvl-2">
 <li class="lvl-4">
 <ul class="lvl-4">
-<li class="lvl-6">f(x) = max(0,f(x)) 计算简单</li>
+<li class="lvl-6">$$f(x) = max(0,f(x))$$ 计算简单</li>
 <li class="lvl-6">对于负值输入，梯度为0，梯度为0</li>
 <li class="lvl-6">在0点处不可导，一般指定0处的导数为0或者使用ln(1+e^x)来取代，0处的导数值为0.5</li>
 </ul>
@@ -471,21 +472,350 @@
 </li>
 <li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">Gelu <strong>（LLM）</strong></li>
+<li class="lvl-4">Gelu</li>
 </ul>
 </li>
 <li class="lvl-2">
 <ul class="lvl-2">
 <li class="lvl-4">
 <ul class="lvl-4">
-<li class="lvl-6">高斯误差函数变种<img src="https://cdn.nlark.com/yuque/0/2023/png/33921914/1700187820925-1016bb6f-e61d-406e-9e14-d1f1f3dc080c.png" srcset="/img/loading.gif" lazyload alt="img"></li>
+<li class="lvl-6">高斯误差函数变种: $$GELU(x) = 0.5x(1+tanh(\sqrt{\frac{2}{\pi}}(x+0.044715x^3))$$</li>
 <li class="lvl-6">在接近0的范围内呈线性，在其他地方具有非线形</li>
-<li class="lvl-6">计算复杂度高，增加训练时间</li>
+<li class="lvl-6">计算复杂度高，会增加训练时间</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
+<h3 id="损失函数">损失函数</h3>
+<p>度量神经网络预测结果和真实标签的误差，常见损失函数有</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>MSE（Mean Squared Error） L2Loss 均方误差</p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">预测值与真实值见的误差服从标准高斯分布</li>
+<li class="lvl-4">更快收敛</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>MAE (Mean Absolute Error)</p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">预测值与真实值之间服从拉普拉斯分布</li>
+<li class="lvl-4">受异常值影响更小</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>Cross-Entropy Loss 交叉熵损失函数</p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">常用于多类别分类问题的模型的训练</li>
+<li class="lvl-4"><img src="https://cdn.nlark.com/yuque/0/2023/png/33921914/1700403310342-a69a131f-0e78-4a49-a1f9-5c07ee13ae47.png" srcset="/img/loading.gif" lazyload alt="img"></li>
+<li class="lvl-4">避免梯度消失</li>
+<li class="lvl-4">多分类问题效果好</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>Huber Loss</p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">MSE+MAE</li>
+<li class="lvl-4">增加MSE鲁棒性，弥补MAE loss下降速度慢的问题</li>
+<li class="lvl-4">额外设置超参数</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><strong>NCE（Noise-Contrastive Estimation）：</strong></p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4"><strong>定义：</strong> NCE 是一种用于训练概率模型的损失函数，通过将真实样本与噪声样本进行对比，从而将问题转化为一个二分类问题。它的核心思想是通过引入负样本，简化了估计概率分布的问题。</li>
+<li class="lvl-4"><strong>应用：</strong> 在对比学习中，NCE 可以被用作损失函数，通过最小化真实样本与负样本之间的差异来训练模型。NCE Loss 对于大规模数据集的训练效果较好。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><strong>InfoNCE（Information Noise-Contrastive Estimation）：</strong></p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4"><strong>定义：</strong> InfoNCE 是对 NCE 的扩展，通过使用信息论的概念，将 NCE 表述为最大化样本与负样本之间的互信息。这样的设计使得 InfoNCE 在处理大规模数据集时更加鲁棒。</li>
+<li class="lvl-4"><strong>应用：</strong> 在对比学习中，InfoNCE Loss 用于最大化正例与负例之间的互信息，从而优化模型参数。</li>
+<li class="lvl-4">NCE 可以被看作 InfoNCE 的一种特例，当 InfoNCE 的信息量项中的正则化项趋近于零时，它等价于 NCE。</li>
+<li class="lvl-4">交叉熵可以被视为 NCE 在样本量趋于无穷时的极限情况。</li>
+</ul>
+</li>
+</ul>
+<h3 id="过拟合-欠拟合">过拟合 &amp; 欠拟合</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><strong>过拟合</strong>：在训练数据上好，在新数据上表现差</p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4"><strong>数据增强：增强数据的多样性</strong></li>
+<li class="lvl-4">交叉验证</li>
+<li class="lvl-4">削减模型层数</li>
+<li class="lvl-4"><strong>正则化 （限制模型的参数大小）</strong></li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6">约束参数大小，降低过拟合，降低模型复杂度</li>
+<li class="lvl-6">L1 <strong>在模型的损失函数中添加模型权重的绝对值之和</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6">
+<ul class="lvl-6">
+<li class="lvl-8"><strong>有助于一些权重为0，从而实现特征选择，减少模型的复杂性</strong></li>
+<li class="lvl-8">适用于特征稀疏性强的情况</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6">L2 <strong>在模型的损失函数中添加模型权重的平方和</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6">
+<ul class="lvl-6">
+<li class="lvl-8"><strong>有助于防止权重过大，使模型更加稳定，使得所有特征对于预测都有一定贡献</strong></li>
+<li class="lvl-8">适用于所有特征对预测有一定贡献的情况</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">DropOut 剪枝</li>
+<li class="lvl-4">正则化和Dropout都应该是在网络的前半部分用（特征提取）</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><strong>欠拟合：在训练数据和新数据上表现都差</strong></p>
+</li>
+</ul>
+<h3 id="梯度爆炸-消失">梯度爆炸&amp;消失</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>激活函数</p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">Relu Gelu</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>残差链接</p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">缓解梯度消失的问题</li>
+<li class="lvl-4">便于训练更深的网络</li>
+<li class="lvl-4">提高模型的收敛速度</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>Normalization</p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">将模型特征的值统一到相似的范围内，加速模型的训练过程</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>减小学习率</p>
+</li>
+</ul>
+<h3 id="优化算法">优化算法</h3>
+<p>通过迭代过程调整模型的参数，目的是最小化损失函数。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>梯度下降（GD gradient descent）</p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">BGD 每次迭代用训练集的所有数据</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6">每次便利数据集制作一次梯度下降</li>
+<li class="lvl-6">训练慢</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">SGD每次迭代只考虑一个样本</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6">下降迭代快，但可能非最优解</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">mini-batch 迭代使用一批样本</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6">震荡</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">SGDM SGD with Momentum</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6">梯度下降过程可以引入惯性，如果前后梯度相反，减少震荡，如果前后方向相同，步伐加大，加快学习速度。<strong>动量项直接使用上一次迭代的梯度</strong></li>
+<li class="lvl-6">减小震荡：减小梯度更新的方差，使得模型参数更加平滑的更新</li>
+<li class="lvl-6">加速模型参数的收敛
+<ul class="lvl-6">
+<li class="lvl-8">$$v_{t+1} = \beta \cdot v_t+\eta \cdot \nabla J(\theta_t)$$</li>
+<li class="lvl-8">$$\theta_{t+1} = \theta_t-v_{t+1}$$</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6"><strong>问题</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6">
+<ul class="lvl-6">
+<li class="lvl-8">容易导致局部最优解</li>
+<li class="lvl-8">时刻t的梯度下降方向是由累积动量决定的</li>
+<li class="lvl-8">梯度多次迭代都是一个方向，梯度增大导致梯度爆炸</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">NAG（Nesterov Acceleration）<strong>根据当前动量预估未来位置的梯度</strong>
+<ul class="lvl-4">
+<li class="lvl-6">$$v_{t+1} = \beta \cdot v_t+\eta \cdot \nabla J(\theta - \beta \cdot v_t)$$</li>
+<li class="lvl-6">$$\theta_{t+1} = \theta_t-v_{t+1}$$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6"><strong>看动量累积后的梯度方向，先对参数进行一次估计，然后更新动量，再更新参数</strong></li>
+<li class="lvl-6">学习率是恒定的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">AdaGrad <strong>累积全部梯度，对不同的参数使用不同的学习率</strong></li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6">频繁更新的参数学习率小，偶尔出现的参数学习率大</li>
+<li class="lvl-6">稀疏数据情况下表现好</li>
+<li class="lvl-6">实际情况下频繁更新的参数的学习率会很快衰减到0</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">RMSProp （root mean square Prop）</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6">为了解决AdaGrad学习率过度衰减的问题，只关注某一窗口的梯度</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4"><strong>Adam (SGDM+RMSProp+修正)</strong></li>
+</ul>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+<ul class="lvl-4">
+<li class="lvl-6"><strong>带动量的随机梯度下降</strong></li>
+<li class="lvl-6"><strong>对于不同参数使用不同的学习率</strong></li>
+<li class="lvl-6"><strong>为了防止累计梯度的问题，只关注某一窗口内的梯度</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id=""></h3>
 
                 
               </div>
