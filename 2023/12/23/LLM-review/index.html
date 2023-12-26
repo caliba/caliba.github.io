@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/img/default.png">
 <meta property="article:published_time" content="2023-12-23T09:58:57.000Z">
-<meta property="article:modified_time" content="2023-12-25T16:32:49.996Z">
+<meta property="article:modified_time" content="2023-12-26T15:02:35.928Z">
 <meta property="article:author" content="Agonsle">
 <meta property="article:tag" content="大模型 实习">
 <meta name="twitter:card" content="summary_large_image">
@@ -306,7 +306,7 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2023年12月26日 凌晨
+                    本文最后更新于：2023年12月26日 晚上
                   
                 
               </p>
@@ -322,20 +322,20 @@
 <li class="lvl-2">
 <p>进行精度选择</p>
 </li>
-<li class="lvl-2">
-<ul class="lvl-2">
-<li class="lvl-4">例如：f(x) &gt;&gt; x时，FP32 如：Exp, Log ,Cross-entropy 这些操作可能导致在FW和BW时结果有溢出</li>
-<li class="lvl-4">RelU, sigmoid对于FP16 计算安全</li>
-<li class="lvl-4">大型规约、Loss计算应在FP32中进行</li>
-</ul>
+<li class="lvl-3">
+<p>例如：f(x) &gt;&gt; x时，FP32 如：Exp, Log ,Cross-entropy 这些操作可能导致在FW和BW时结果有溢出</p>
+</li>
+<li class="lvl-4">
+<p>RelU, sigmoid对于FP16 计算安全</p>
+</li>
+<li class="lvl-4">
+<p>大型规约、Loss计算应在FP32中进行</p>
 </li>
 </ul>
 <p>BF16和PF16都是16位浮点数格式</p>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><strong>BF16</strong></p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
 <li class="lvl-4"><strong>1</strong> 符号位 8指数位 7尾数位</li>
 <li class="lvl-4">较大的数值范围</li>
@@ -344,15 +344,12 @@
 </li>
 <li class="lvl-2">
 <p>FP16</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
 <li class="lvl-4">1 符号位 5指数位 10 尾数位</li>
 <li class="lvl-4">精度高</li>
 </ul>
 </li>
 </ul>
-<h3 id=""></h3>
 <h3 id="模型参数量计算">模型参数量计算</h3>
 <p>针对参数量大小为<strong>x</strong>的模型，使用混合精度模型训练</p>
 <ul class="lvl-0">
@@ -375,8 +372,6 @@
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>BN : 一个batch在同一纬度上做处理，所有样本的每一个特征之上进行归一化，规范化分布，解决内部<strong>协方差</strong>偏移，缓解梯度饱和问题，加快收敛。（沿着channel方向，标准化图）BN处理一个小批量（batch）中所有样本的同一特征。它计算小批量中每个特征的均值和方差，并使用这些统计信息来归一化特征。</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
 <li class="lvl-4">在CV卷积核中使用，是为了使得在不同样本上提取特征的稳定性</li>
 <li class="lvl-4">抹杀了不同特征之间的大小关系，保留了不同样本间的大小关系</li>
@@ -385,8 +380,6 @@
 </li>
 <li class="lvl-2">
 <p>LN：在每个特征维度上进行归一化（在每个句子间） LN在单个样本内跨所有特征进行归一化。与BN不同，它不依赖于小批量中的其他样本。</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
 <li class="lvl-4">batch内不同样本同一位置token之间的差异性很重要，保证在不同token上提取的稳定性</li>
 </ul>
@@ -411,20 +404,16 @@
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>PreNorm</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">在 prenorm 中，归一化操作在层的输入之前进行。具体而言，在输入进入层之前，首先应用层归一化操作。这样，归一化的计算会涉及到输入以及层的权重和偏置参数。</li>
+<li class="lvl-6">在 prenorm 中，归一化操作在层的输入之前进行。具体而言，在输入进入层之前，首先应用层归一化操作。这样，归一化的计算会涉及到输入以及层的权重和偏置参数。</li>
 <li class="lvl-4">这种方式的一个优势是能够更好地处理梯度传播，因为输入进入网络时已经被归一化，梯度信号更容易传递。但有时可能会受到初始归一化对梯度的影响。</li>
 <li class="lvl-4">容易训练，但是深层网络学习不好，因为权重大多来自恒等分支，恒等分支容易训练</li>
 </ul>
 </li>
 <li class="lvl-2">
 <p>PostNorm</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">先将上一层的输出和当前层的输出相加之后，在进行归一化</li>
+<li class="lvl-6">先将上一层的输出和当前层的输出相加之后，在进行归一化</li>
 <li class="lvl-4">这种方式的优势在于，归一化操作不会影响输入到层的计算，因此在训练初期可能更容易收敛。然而，在梯度传播方面可能存在一些挑战。</li>
 <li class="lvl-4">训练效果好，但是不容易训练（相当于残差部分的功能被削弱了）</li>
 </ul>
@@ -438,20 +427,16 @@
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>L1 <strong>在模型的损失函数中添加模型权重的绝对值之和</strong></p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4"><strong>有助于一些权重为0，从而实现特征选择，减少模型的复杂性</strong></li>
+<li class="lvl-6"><strong>有助于一些权重为0，从而实现特征选择，减少模型的复杂性</strong></li>
 <li class="lvl-4">适用于特征稀疏性强的情况</li>
 <li class="lvl-4">L1 范数倾向于使一些参数变为零，因此适用于特征选择和稀疏性推导。</li>
 </ul>
 </li>
 <li class="lvl-2">
 <p>L2 <strong>在模型的损失函数中添加模型权重的平方和</strong></p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4"><strong>有助于防止权重过大，使模型更加稳定，使得所有特征对于预测都有一定贡献</strong></li>
+<li class="lvl-6"><strong>有助于防止权重过大，使模型更加稳定，使得所有特征对于预测都有一定贡献</strong></li>
 <li class="lvl-4">适用于所有特征对预测有一定贡献的情况</li>
 <li class="lvl-4">L2 范数倾向于使参数都变得较小，适用于权重衰减和防止过拟合。</li>
 </ul>
@@ -474,16 +459,11 @@
 <p>​		<strong>激活函数在神经网络的每一层中引入非线性，使得神经网络能够你和复杂的非线性模式</strong></p>
 <ul class="lvl-0">
 <li class="lvl-2">
+<p>Sigmoid</p>
 <ul class="lvl-2">
-<li class="lvl-4">Sigmoid
-<ul class="lvl-4">
-<li class="lvl-6">$$f(x) = \frac{1}{1+e^{-x}}$$</li>
-</ul>
+<li class="lvl-4">
+<p>$$f(x) = \frac{1}{1+e^{-x}}$$</p>
 </li>
-</ul>
-</li>
-<li class="lvl-2">
-<ul class="lvl-2">
 <li class="lvl-4">
 <ul class="lvl-4">
 <li class="lvl-6">一般适用于二元分类问题，输出在0,1之间，在极值附近趋于0，反向传播梯度小时</li>
@@ -492,35 +472,19 @@
 </ul>
 </li>
 <li class="lvl-2">
+<p>Relu</p>
 <ul class="lvl-2">
-<li class="lvl-4">Relu</li>
+<li class="lvl-4">$$f(x) = max(0,f(x))$$ 计算简单</li>
+<li class="lvl-4">对于负值输入，梯度为0，梯度为0</li>
+<li class="lvl-4">在0点处不可导，一般指定0处的导数为0或者使用ln(1+e^x)来取代，0处的导数值为0.5</li>
 </ul>
 </li>
 <li class="lvl-2">
+<p>Gelu</p>
 <ul class="lvl-2">
-<li class="lvl-4">
-<ul class="lvl-4">
-<li class="lvl-6">$$f(x) = max(0,f(x))$$ 计算简单</li>
-<li class="lvl-6">对于负值输入，梯度为0，梯度为0</li>
-<li class="lvl-6">在0点处不可导，一般指定0处的导数为0或者使用ln(1+e^x)来取代，0处的导数值为0.5</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="lvl-2">
-<ul class="lvl-2">
-<li class="lvl-4">Gelu</li>
-</ul>
-</li>
-<li class="lvl-2">
-<ul class="lvl-2">
-<li class="lvl-4">
-<ul class="lvl-4">
-<li class="lvl-6">高斯误差函数变种: $$GELU(x) = 0.5x(1+tanh(\sqrt{\frac{2}{\pi}}(x+0.044715x^3))$$</li>
-<li class="lvl-6">在接近0的范围内呈线性，在其他地方具有非线形</li>
-<li class="lvl-6">计算复杂度高，会增加训练时间</li>
-</ul>
-</li>
+<li class="lvl-4">高斯误差函数变种: $$GELU(x) = 0.5x(1+tanh(\sqrt{\frac{2}{\pi}}(x+0.044715x^3))$$</li>
+<li class="lvl-4">在接近0的范围内呈线性，在其他地方具有非线形</li>
+<li class="lvl-4">计算复杂度高，会增加训练时间</li>
 </ul>
 </li>
 </ul>
@@ -529,28 +493,22 @@
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>MSE（Mean Squared Error） L2Loss 均方误差</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">预测值与真实值见的误差服从标准高斯分布</li>
+<li class="lvl-6">预测值与真实值见的误差服从标准高斯分布</li>
 <li class="lvl-4">更快收敛</li>
 </ul>
 </li>
 <li class="lvl-2">
 <p>MAE (Mean Absolute Error)</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">预测值与真实值之间服从拉普拉斯分布</li>
+<li class="lvl-6">预测值与真实值之间服从拉普拉斯分布</li>
 <li class="lvl-4">受异常值影响更小</li>
 </ul>
 </li>
 <li class="lvl-2">
 <p>Cross-Entropy Loss 交叉熵损失函数</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">常用于多类别分类问题的模型的训练</li>
+<li class="lvl-6">常用于多类别分类问题的模型的训练</li>
 <li class="lvl-4"><img src="https://cdn.nlark.com/yuque/0/2023/png/33921914/1700403310342-a69a131f-0e78-4a49-a1f9-5c07ee13ae47.png" srcset="/img/loading.gif" lazyload alt="img"></li>
 <li class="lvl-4">避免梯度消失</li>
 <li class="lvl-4">多分类问题效果好</li>
@@ -591,66 +549,43 @@
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><strong>过拟合</strong>：在训练数据上好，在新数据上表现差</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4"><strong>数据增强：增强数据的多样性</strong></li>
-<li class="lvl-4">交叉验证</li>
-<li class="lvl-4">削减模型层数</li>
-<li class="lvl-4"><strong>正则化 （限制模型的参数大小）</strong></li>
-</ul>
-</li>
-<li class="lvl-2">
-<ul class="lvl-2">
-<li class="lvl-4">
-<ul class="lvl-4">
-<li class="lvl-6">约束参数大小，降低过拟合，降低模型复杂度</li>
-<li class="lvl-6">L1 <strong>在模型的损失函数中添加模型权重的绝对值之和</strong></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="lvl-2">
-<ul class="lvl-2">
-<li class="lvl-4">
-<ul class="lvl-4">
 <li class="lvl-6">
-<ul class="lvl-6">
-<li class="lvl-8"><strong>有助于一些权重为0，从而实现特征选择，减少模型的复杂性</strong></li>
-<li class="lvl-8">适用于特征稀疏性强的情况</li>
-</ul>
+<p><strong>数据增强：增强数据的多样性</strong></p>
 </li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="lvl-2">
-<ul class="lvl-2">
 <li class="lvl-4">
-<ul class="lvl-4">
-<li class="lvl-6">L2 <strong>在模型的损失函数中添加模型权重的平方和</strong></li>
-</ul>
+<p>交叉验证</p>
 </li>
-</ul>
-</li>
-<li class="lvl-2">
-<ul class="lvl-2">
 <li class="lvl-4">
+<p>削减模型层数</p>
+</li>
+<li class="lvl-4">
+<p><strong>正则化 （限制模型的参数大小）</strong></p>
 <ul class="lvl-4">
-<li class="lvl-6">
+<li class="lvl-8">约束参数大小，降低过拟合，降低模型复杂度
 <ul class="lvl-6">
-<li class="lvl-8"><strong>有助于防止权重过大，使模型更加稳定，使得所有特征对于预测都有一定贡献</strong></li>
-<li class="lvl-8">适用于所有特征对预测有一定贡献的情况</li>
+<li class="lvl-10">L1 <strong>在模型的损失函数中添加模型权重的绝对值之和</strong>
+<ul class="lvl-8">
+<li class="lvl-12"><strong>有助于一些权重为0，从而实现特征选择，减少模型的复杂性</strong></li>
+<li class="lvl-12">适用于特征稀疏性强的情况</li>
+</ul>
+</li>
+<li class="lvl-10">L2 <strong>在模型的损失函数中添加模型权重的平方和</strong>
+<ul class="lvl-8">
+<li class="lvl-12"><strong>有助于防止权重过大，使模型更加稳定，使得所有特征对于预测都有一定贡献</strong></li>
+<li class="lvl-12">适用于所有特征对预测有一定贡献的情况</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="lvl-2">
-<ul class="lvl-2">
-<li class="lvl-4">DropOut 剪枝</li>
-<li class="lvl-4">正则化和Dropout都应该是在网络的前半部分用（特征提取）</li>
+<li class="lvl-4">
+<p>DropOut 剪枝</p>
+<ul class="lvl-4">
+<li class="lvl-6">正则化和Dropout都应该是在网络的前半部分用（特征提取）</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="lvl-2">
@@ -661,28 +596,22 @@
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>激活函数</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">Relu Gelu</li>
+<li class="lvl-6">Relu Gelu</li>
 </ul>
 </li>
 <li class="lvl-2">
 <p>残差链接</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">缓解梯度消失的问题</li>
+<li class="lvl-6">缓解梯度消失的问题</li>
 <li class="lvl-4">便于训练更深的网络</li>
 <li class="lvl-4">提高模型的收敛速度</li>
 </ul>
 </li>
 <li class="lvl-2">
 <p>Normalization</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">将模型特征的值统一到相似的范围内，加速模型的训练过程</li>
+<li class="lvl-6">将模型特征的值统一到相似的范围内，加速模型的训练过程</li>
 </ul>
 </li>
 <li class="lvl-2">
@@ -847,42 +776,32 @@
 </li>
 <li class="lvl-2">
 <p>参数量计算</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">self-attention: Wq,Wk,Wv,Wo, bias: 权重大小为 <strong>[h,h]</strong> ，bias为[h] 参数量为：<strong>4h*h + 4h</strong></li>
-<li class="lvl-4">MLP:两个线性层</li>
-</ul>
+<li class="lvl-6">
+<p>self-attention: Wq,Wk,Wv,Wo, bias: 权重大小为 <strong>[h,h]</strong> ，bias为[h] 参数量为：<strong>4h*h + 4h</strong></p>
 </li>
-<li class="lvl-2">
-<ul class="lvl-2">
-<li class="lvl-4">
+<li class="lvl-6">
+<p>MLP:两个线性层</p>
 <ul class="lvl-4">
-<li class="lvl-6">维度从h–&gt;4h, bias 为4h</li>
-<li class="lvl-6">维度从4h–&gt;h bias 为h</li>
-<li class="lvl-6">参数量为8h*h+5h</li>
+<li class="lvl-10">维度从h–&gt;4h, bias 为4h</li>
+<li class="lvl-10">维度从4h–&gt;h bias 为h</li>
+<li class="lvl-10">参数量为<strong>8h*h+5h</strong></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="lvl-2">
-<ul class="lvl-2">
-<li class="lvl-4">self-attention和MLP块各有一个LN</li>
-</ul>
+<p>self-attention和MLP块各有一个LN</p>
 </li>
 <li class="lvl-2">
+<p>Layer Normalization <strong>综合考虑一层所有维度的输入，计算该层的平均输入值和输入方差，然后用同一个规范化操作来转换各个维度的输入。</strong></p>
 <ul class="lvl-2">
-<li class="lvl-4">
-<ul class="lvl-4">
-<li class="lvl-6">Layer Normalization <strong>综合考虑一层所有维度的输入，计算该层的平均输入值和输入方差，然后用同一个规范化操作来转换各个维度的输入。</strong></li>
 <li class="lvl-6">包含两个参数：缩放参数和平移参数，维度均为[h], 参数量共为4h</li>
 </ul>
 </li>
-</ul>
-</li>
 <li class="lvl-2">
+<p>每个transformer块共计参数：12h*h+13h</p>
 <ul class="lvl-2">
-<li class="lvl-4">每个transformer块共计参数：12h*h+13h</li>
 <li class="lvl-4">词嵌入矩阵参数：Vh</li>
 <li class="lvl-4">因此Transformer模型课训练参数量：L(12h*h+13h)+Vh</li>
 </ul>
@@ -1002,10 +921,8 @@
 </li>
 <li class="lvl-2">
 <p>对单一的层使用较大的秩，对更多的层使用较小的秩的效果更好。</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">适配更多的权重矩阵比适配具有较大秩的单一类型的权重矩阵表现更好。</li>
+<li class="lvl-6">适配更多的权重矩阵比适配具有较大秩的单一类型的权重矩阵表现更好。</li>
 <li class="lvl-4">增加秩不一定能够覆盖一个更有意义的子空间，一个低秩的适配矩阵可能已经足够了</li>
 </ul>
 </li>
@@ -1022,56 +939,53 @@
 <li class="lvl-2">
 <p>对MLP层</p>
 <ul class="lvl-2">
-<li class="lvl-5">MLP一般是两个FFN层</li>
-</ul>
+<li class="lvl-5">
+<p>MLP一般是两个FFN层</p>
 </li>
-<li class="lvl-2">
-<ul class="lvl-2">
-<li class="lvl-4">按行切分权重，就需要对输入按列进行切分</li>
-<li class="lvl-4">按列切分权重，不需要对输入进行切分</li>
-<li class="lvl-4">Megatron：</li>
-</ul>
+<li class="lvl-6">
+<p>按行切分权重，就需要对输入按列进行切分</p>
 </li>
-<li class="lvl-2">
-<ul class="lvl-2">
 <li class="lvl-4">
+<p>按列切分权重，不需要对输入进行切分</p>
+</li>
+<li class="lvl-4">
+<p>Megatron：</p>
+<pre><code class="hljs">- 第一层：X输入拷贝在两块GPU上，独对权重矩阵A按照列切分，独立进行forward
+</code></pre>
 <ul class="lvl-4">
-<li class="lvl-6">第一层：X输入拷贝在两块GPU上，独对权重矩阵A按照列切分，独立进行forward</li>
-<li class="lvl-6">第二层：对权重矩阵B按照行切分，此时两块GPU上的各自有最终结果的一部分，做一次ALLReduce，相加产生结果</li>
-<li class="lvl-6">目的保证各GPU上计算相互独立，减少通信量（A进行行切分会导致多一次ALLReduce，这是因为GeLU函数非线性的，GELU(x1+x2)!=GELU(x1)+GELU(x2)）</li>
+<li class="lvl-6">
+<p>第二层：对权重矩阵B按照行切分，此时两块GPU上的各自有最终结果的一部分，做一次ALLReduce，相加产生结果</p>
+</li>
+<li class="lvl-6">
+<p>目的保证各GPU上计算相互独立，减少通信量（A进行行切分会导致多一次ALLReduce，这是因为GeLU函数非线性的，GELU(x1+x2)!=GELU(x1)+GELU(x2)）</p>
+</li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="lvl-2">
 <p>对attention层</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">对KQV矩阵按列进行切割，每个头放在一块GPU上做并行计算</li>
+<li class="lvl-6">对KQV矩阵按列进行切割，每个头放在一块GPU上做并行计算</li>
 <li class="lvl-4">对线性层B按照行切割</li>
 </ul>
 </li>
 <li class="lvl-2">
 <p>输入Embedding</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">word embedding 【v，h】词表大小</li>
+<li class="lvl-6">word embedding 【v，h】词表大小</li>
 <li class="lvl-4">词表在两块GPU上，输入访问后再做all-reduce</li>
 </ul>
 </li>
 <li class="lvl-2">
 <p>输出Embedding</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">一般来说，输入层和输出层共用一个word Embbeding</li>
+<li class="lvl-6">一般来说，输入层和输出层共用一个word Embbeding</li>
 <li class="lvl-4">训练的时候，在输入层和输出层会对word embedding做两次梯度更新，必须保证用两次梯度的总和进行更新，当输入和输出层在不同GPU上时，权重更新在前（All reduce）</li>
 </ul>
 </li>
 </ul>
-<h4 id="-2"></h4>
+<h4 id=""></h4>
 <h4 id="pipeline-Para">pipeline Para</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -1079,20 +993,16 @@
 </li>
 <li class="lvl-2">
 <p>【Gpipe】</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">batch–&gt;mini_batch</li>
+<li class="lvl-6">batch–&gt;mini_batch</li>
 <li class="lvl-4">整个batch计算完成后才会反向传播</li>
 <li class="lvl-4">active ckpt 解决内存不足，向后更新的时候重新计算一遍forward</li>
 </ul>
 </li>
 <li class="lvl-2">
 <p>【pipedream】</p>
-</li>
-<li class="lvl-2">
 <ul class="lvl-2">
-<li class="lvl-4">每个microbatch前向传播完成后，立即进入反向传播阶段</li>
+<li class="lvl-6">每个microbatch前向传播完成后，立即进入反向传播阶段</li>
 </ul>
 </li>
 </ul>
@@ -1105,8 +1015,6 @@
 <p>通讯开销大：server需要和每一个worker进行梯度传输，用于更新，带宽易成为瓶颈</p>
 </li>
 </ul>
-<h4 id="-3"></h4>
-<h2 id="-4"></h2>
 
                 
               </div>
